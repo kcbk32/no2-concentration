@@ -75,6 +75,3 @@ economics, operations, and applied data science.
 - **Bayesian time-series modeling**
 
 ---
-
-For a higher-level overview of related Bayesian projects, see the main portfolio
-repository.
