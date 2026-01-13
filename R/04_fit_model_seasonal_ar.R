@@ -1,4 +1,4 @@
-# R/04_fit_model3.R
+# R/04_fit_model_seasonal_ar.R
 source("R/00_packages.R")
 
 dir.create("output/fits", recursive = TRUE, showWarnings = FALSE)

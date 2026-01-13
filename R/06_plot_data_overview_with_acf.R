@@ -9,7 +9,7 @@ suppressPackageStartupMessages({
   library(ggplot2)
   library(dplyr)
   library(tibble)
-  library(gridExtra)  # for arranging plots (usually available; if not, install.packages("gridExtra"))
+  library(gridExtra)
 })
 
 prep <- readRDS("output/prepared_data.rds")
@@ -25,9 +25,7 @@ if (!is.null(df$date)) {
   dates <- as.Date("2000-01-01") + seq_len(N) - 1
 }
 
-# ---- Get NO2 on original scale (preferred for the top panel)
-# Option A: df$no2 exists (ideal)
-# Option B: reconstruct from standardized y (log1p scale) using prep$y_mean, prep$y_sd
+# ---- Get NO2 on original scale
 inv_y_to_no2 <- function(y_std, y_mean, y_sd) exp(y_std * y_sd + y_mean) - 1
 
 no2 <- NULL
@@ -52,8 +50,7 @@ if (!is.null(df$no2)) {
   no2 <- inv_y_to_no2(y_std, prep$y_mean, prep$y_sd)
 }
 
-# ---- Series on model scale for ACF (log1p(NO2), standardized if that’s what you modeled)
-# If you have y_std already, use it; else compute log1p(no2) and standardize for comparability.
+# ---- Series on model scale for ACF (log1p(NO2)
 y_std_for_acf <- NULL
 if (!is.null(df$y)) {
   y_std_for_acf <- as.numeric(df$y)
@@ -130,5 +127,4 @@ dev.off()
 
 cat("Saved:", out_file, "\n")
 
-# Also print to viewer
 gridExtra::grid.arrange(p1, p2, ncol = 1, heights = c(2.1, 1))

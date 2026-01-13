@@ -37,7 +37,7 @@ transformed parameters {
   }
 }
 model {
-  // Regression priors (as you used)
+  // Regression priors
   alpha  ~ normal(0, 2);
   beta   ~ normal(0, 1);
   b_seas ~ normal(0, 0.5);
@@ -45,7 +45,7 @@ model {
   // Seasonal AR coefficient: keeps away from |phiS| ~ 1
   phiS_raw ~ normal(0, 0.5);
 
-  // Scale priors (robust)
+  // Scale priors
   sigma_sar ~ exponential(2);    // mean 0.5
   sigma_obs ~ exponential(2);    // mean 0.5
 
@@ -55,11 +55,9 @@ model {
 }
 generated quantities {
   vector[N] log_lik;
-  //vector[N] y_rep;
 
   for (t in 1:N) {
     real mu = alpha + beta * t_std[t] + dot_product(X_seas[t], b_seas) + r[t];
     log_lik[t] = normal_lpdf(y[t] | mu, sigma_obs);
-    //y_rep[t]   = normal_rng(mu, sigma_obs);
   }
 }
